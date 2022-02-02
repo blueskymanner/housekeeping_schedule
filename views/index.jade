@@ -1,0 +1,247 @@
+extends layout
+
+block content
+    .container
+        form(method='post', action='contact/send')
+            h1(style="font-family: 'Times New Roman', Times, serif, font-weight: bold") 
+                b Schedule
+            br
+            label(style="font-weight: normal; font-size: 125%; font-weight: bold") Week Range: &#xA0
+            select(name='state' style="padding: 3px 10px;" id="weekIds" class="selectWeek")
+                each week in weeks
+                    option(value="#{week.id}") #{week.week}
+                    | &#x9;
+
+            .main-table
+                table
+                    thead
+                        tr
+                            th Date
+                            th Day
+                            th Shift 
+                            th HK(AC) 1st Staff 
+                            th HK(AC) 2nd Staff
+                            th –
+                            th F&B 1 Staff
+                            th –
+                            th –
+                            th Action
+                    tbody.tablecontent
+                        each schedule in schedules
+                            tr
+                                td(rowspan="2") 
+                                    input(type="text" name="aaa" value="#{schedule.date}" style="width: 70px; background-color: transparent; border: none; outline: none" readonly)
+                                td(rowspan="2") 
+                                    input(type="text" name="bbb" value="#{schedule.day}" style="width: 100px; background-color: transparent; border: none; outline: none" readonly)
+                                    td
+                                        input(type="text" name="ccc" value="#{schedule.shift[0]}" style="width: 70px; background-color: transparent; border: none; outline: none" readonly)
+                                    td 
+                                        input(type="text" name="ddd" id="#{schedule.id}7777ac_first1" value="#{schedule.ac_first[0]}" style="width: 70px; background-color: transparent; border: none; outline: none" readonly)
+                                    td 
+                                        input(type="text" name="eee" id="#{schedule.id}7777ac_second1" value="#{schedule.ac_second[0]}" style="width: 70px; background-color: transparent; border: none; outline: none" readonly)
+                                    td –
+                                    td 
+                                        input(type="text" name="fff" id="#{schedule.id}7777fb_staff1" value="#{schedule.fb_staff[0]}" style="width: 70px; background-color: transparent; border: none; outline: none" readonly)
+                                    td –
+                                    td –
+                                    td 
+                                        button.btn.btn-default(onclick="editFirst(#{schedule.id}7777)" style="font-weight: bold; font-size: 100%;" type="button") Edit
+                                        p(id="demo1" style="display:none") 
+                                tr
+                                    td 
+                                        input(type="text" name="ggg" value="#{schedule.shift[1]}" style="width: 70px; background-color: transparent; border: none; outline: none" readonly)
+                                    td 
+                                        input(type="text" name="hhh" id="#{schedule.id}9999ac_first2" value="#{schedule.ac_first[1]}" style="width: 70px; background-color: transparent; border: none; outline: none" readonly)
+                                    td 
+                                        input(type="text" name="iii" id="#{schedule.id}9999ac_second2" value="#{schedule.ac_second[1]}" style="width: 70px; background-color: transparent; border: none; outline: none" readonly)
+                                    td –
+                                    td 
+                                        input(type="text" name="jjj" id="#{schedule.id}9999fb_staff2" value="#{schedule.fb_staff[1]}" style="width: 70px; background-color: transparent; border: none; outline: none" readonly)
+                                    td –
+                                    td –
+                                    td 
+                                        button.btn.btn-default(onclick="editSecond(#{schedule.id}9999)" style="font-weight: bold; font-size: 100%;" type="button") Edit 
+                                        p(id="demo2" style="display:none") 
+
+            div(style="text-align: center; margin-top: 20px;")
+                button.btn.btn-default(type="submit" style="font-weight: bold; font-size: 125%;" onclick="alert('Saved Successfully.');") Publish
+
+        div(class='modal_container')
+            each schedule in schedules
+                .modal(id="#{schedule.id}7777")
+                    div.modal-dialog.modal-lg
+                        div(class="modal-content animate")
+                            .imgcontainer 
+                                span.close(onclick="document.getElementById("+schedule.id+"7777"+").style.display='none'" title="Close Modal") &times;
+                                
+                            .container-modal
+                                h1 
+                                    b(style="font-family: 'Times New Roman', Times, serif, font-weight: bold") #{schedule.day} 
+                                h4
+                                    b(style="font-weight: normal; font-size: 125%; font-weight: bold") #{schedule.shift[0]}
+                                br
+                                br
+                                div 
+                                    label(style="font-weight: normal; font-size: 125%; font-weight: bold") Housekeeping(Amenity Center): &#xA0
+                                    select(name='status' style="padding: 3px 10px; font-weight: bold" id="#{schedule.id}7777acFirst1")
+                                        option(value="") -- Please Choose a Staff Name -- 
+                                        | &#x9;
+                                        option(value="" disabled) -Trained in Amenity Center
+                                        | &#x9;
+                                        option(value="Ali") Ali
+                                        | &#x9;
+                                        option(value="Ella") Ella
+                                        | &#x9;
+                                        option(value="Gina") Gina
+                                        | &#x9;
+                                        option(value="" disabled) -Trained as GAS
+                                        | &#x9;
+                                        option(value="Charles") Charles
+                                        | &#x9;
+                                        option(value="Danny") Danny
+                                        | &#x9;
+                                        option(value="Hannah") Hannah
+                                        | &#x9;
+                                        option(value="Ivan") Ivan
+                                        | &#x9;
+                                br
+                                div 
+                                    label(style="font-weight: normal; font-size: 125%; font-weight: bold") Housekeeping(Amenity Center): &#xA0
+                                    select(name='status' style="padding: 3px 10px; font-weight: bold" id="#{schedule.id}7777acSecond1")
+                                        option(value="") -- Please Choose a Staff Name -- 
+                                        | &#x9;
+                                        option(value="" disabled) -Trained in Amenity Center
+                                        | &#x9;
+                                        option(value="Ali") Ali
+                                        | &#x9;
+                                        option(value="Ella") Ella
+                                        | &#x9;
+                                        option(value="Gina") Gina
+                                        | &#x9;
+                                        option(value="" disabled) -Trained as GAS
+                                        | &#x9;
+                                        option(value="Charles") Charles
+                                        | &#x9;
+                                        option(value="Danny") Danny
+                                        | &#x9;
+                                        option(value="Hannah") Hannah
+                                        | &#x9;
+                                        option(value="Ivan") Ivan
+                                        | &#x9;
+                                br
+                                div 
+                                    label(style="font-weight: normal; font-size: 125%; font-weight: bold") F&B(Captain): &#xA0
+                                    select(name='status' style="padding: 3px 10px; font-weight: bold" id="#{schedule.id}7777fbStaff1")
+                                        option(value="") -- Please Choose a Staff Name -- 
+                                        | &#x9;
+                                        option(value="" disabled) -Trained in Amenity Center
+                                        | &#x9;
+                                        option(value="Ali") Ali
+                                        | &#x9;
+                                        option(value="Ella") Ella
+                                        | &#x9;
+                                        option(value="Gina") Gina
+                                        | &#x9;
+                                        option(value="" disabled) -Trained as GAS
+                                        | &#x9;
+                                        option(value="Charles") Charles
+                                        | &#x9;
+                                        option(value="Danny") Danny
+                                        | &#x9;
+                                        option(value="Hannah") Hannah
+                                        | &#x9;
+                                        option(value="Ivan") Ivan
+                                        | &#x9;
+                                br
+                                div(style="margin-bottom: 50px;")
+                                    button.btn.btn-default(onclick="document.getElementById("+schedule.id+"7777"+").style.display='none'" type='button' class="submit1" style="font-weight: bold; font-size: 115%;") Submit 
+                                    span(style="font-weight: normal; font-weight: bold") >
+
+                .modal(id="#{schedule.id}9999")
+                    div.modal-dialog.modal-lg
+                        form(method='post', action='contact/transfer' class="modal-content animate")
+                            .imgcontainer 
+                                span.close(onclick="document.getElementById("+schedule.id+"9999"+").style.display='none'" title="Close Modal") &times;
+                                
+                            .container-modal
+                                h1 
+                                    b(style="font-family: 'Times New Roman', Times, serif, font-weight: bold") #{schedule.day} 
+                                h4
+                                    b(style="font-weight: normal; font-size: 125%; font-weight: bold") #{schedule.shift[1]}
+                                br
+                                br
+                                div 
+                                    label(style="font-weight: normal; font-size: 125%; font-weight: bold") Housekeeping(Amenity Center): &#xA0
+                                    select(name='status' style="padding: 3px 10px; font-weight: bold" id="#{schedule.id}9999acFirst2")
+                                        option(value="") -- Please Choose a Staff Name -- 
+                                        | &#x9;
+                                        option(value="" disabled) -Trained in Amenity Center
+                                        | &#x9;
+                                        option(value="Ali") Ali
+                                        | &#x9;
+                                        option(value="Ella") Ella
+                                        | &#x9;
+                                        option(value="Gina") Gina
+                                        | &#x9;
+                                        option(value="" disabled) -Trained as GAS
+                                        | &#x9;
+                                        option(value="Charles") Charles
+                                        | &#x9;
+                                        option(value="Danny") Danny
+                                        | &#x9;
+                                        option(value="Hannah") Hannah
+                                        | &#x9;
+                                        option(value="Ivan") Ivan
+                                        | &#x9;
+                                br
+                                div 
+                                    label(style="font-weight: normal; font-size: 125%; font-weight: bold") Housekeeping(Amenity Center): &#xA0
+                                    select(name='status' style="padding: 3px 10px; font-weight: bold" id="#{schedule.id}9999acSecond2")
+                                        option(value="") -- Please Choose a Staff Name -- 
+                                        | &#x9;
+                                        option(value="" disabled) -Trained in Amenity Center
+                                        | &#x9;
+                                        option(value="Ali") Ali
+                                        | &#x9;
+                                        option(value="Ella") Ella
+                                        | &#x9;
+                                        option(value="Gina") Gina
+                                        | &#x9;
+                                        option(value="" disabled) -Trained as GAS
+                                        | &#x9;
+                                        option(value="Charles") Charles
+                                        | &#x9;
+                                        option(value="Danny") Danny
+                                        | &#x9;
+                                        option(value="Hannah") Hannah
+                                        | &#x9;
+                                        option(value="Ivan") Ivan
+                                        | &#x9;
+                                br
+                                div 
+                                    label(style="font-weight: normal; font-size: 125%; font-weight: bold") F&B(Captain): &#xA0
+                                    select(name='status' style="padding: 3px 10px; font-weight: bold" id="#{schedule.id}9999fbStaff2")
+                                        option(value="") -- Please Choose a Staff Name -- 
+                                        | &#x9;
+                                        option(value="" disabled) -Trained in Amenity Center
+                                        | &#x9;
+                                        option(value="Ali") Ali
+                                        | &#x9;
+                                        option(value="Ella") Ella
+                                        | &#x9;
+                                        option(value="Gina") Gina
+                                        | &#x9;
+                                        option(value="" disabled) -Trained as GAS
+                                        | &#x9;
+                                        option(value="Charles") Charles
+                                        | &#x9;
+                                        option(value="Danny") Danny
+                                        | &#x9;
+                                        option(value="Hannah") Hannah
+                                        | &#x9;
+                                        option(value="Ivan") Ivan
+                                        | &#x9;
+                                br
+                                div(style="margin-bottom: 50px;")
+                                    button.btn.btn-default(onclick="document.getElementById("+schedule.id+"9999"+").style.display='none'" type='button' class="submit2" style="font-weight: bold; font-size: 115%;") Submit 
+                                    span(style="font-weight: normal; font-weight: bold") >
